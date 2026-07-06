@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Bibliothèque Numérique</title>
+
+    <link rel="stylesheet" href="register.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            <img src="images/logo biblio.jfif" alt="Logo bibliothèque" width="50" height="50">
+            My Library
+        </div>
+
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="login.html">Connexion</a>
+            <a href="register.html">Inscription</a>
+            <a href="Apropos.html">À propos</a>
+        </nav>
+
+    </header>
+
+    <main class="register-section">
+
+        <div class="register-card">
+
+            <h2>Créer un compte</h2>
+
+            <p>Rejoignez notre bibliothèque numérique</p>
+
+            <form action="#" method="POST">
+
+                <div class="input-box">
+                    <label for="fullname">Nom complet</label>
+                    <input type="text" id="fullname" placeholder="Entrez votre nom complet" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Entrez votre adresse email" required>
+                </div>
+
+                <div class="input-box">
+                    <label for="password">Mot de passe</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Créez un mot de passe" required>
+                        <button type="button" class="toggle-password" aria-label="Afficher le mot de passe">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="input-box">
+                    <label for="confirm-password">Confirmer le mot de passe</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirm-password" placeholder="Confirmez votre mot de passe" required>
+                        <button type="button" class="toggle-password confirm-toggle" aria-label="Afficher le mot de passe">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn">S'inscrire</button>
+
+            </form>
+
+            <p class="login-link">
+                Vous avez déjà un compte ?
+                <a href="login.html">Se connecter</a>
+            </p>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <div class="footer-logo-circle">
+                <img src="images/logo biblio.jfif" alt="Logo My Library">
+            </div>
+            <span>2026 My Library</span>
+        </div>
+    </footer>
+
+    <script>
+        const passwordFields = document.querySelectorAll('.password-wrapper input');
+        const toggles = document.querySelectorAll('.toggle-password');
+
+        toggles.forEach((toggle, index) => {
+            toggle.addEventListener('click', () => {
+                const input = passwordFields[index];
+                if (!input) return;
+
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                toggle.innerHTML = isPassword
+                    ? '<i class="fa-solid fa-eye-slash"></i>'
+                    : '<i class="fa-solid fa-eye"></i>';
+                toggle.setAttribute('aria-label', isPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+            });
+        });
+    </script>
+
+</body>
+
+</html>
