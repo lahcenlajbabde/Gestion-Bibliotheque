@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord | Mon compte</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="" width="50" height="50">
+            My Library
+        </div>
+        <nav>
+            <a href="{{ url_for('documents') }}"><i class="fa-solid fa-book-open"></i> Documents</a>
+            <a href="{{ url_for('dashboard') }}"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{ url_for('apropos') }}"><i class="fa-solid fa-circle-info"></i> À propos</a>
+            <a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-section">
+        <div class="dashboard-card dashboard-grid">
+            <section class="profile-summary">
+                {% set profile_src = url_for('static', filename='images/profiles/' + user.profile_image) if user.profile_image else url_for('static', filename='images/logo biblio.jfif') %}
+                <div class="profile-picture">
+                    <img src="{{ profile_src }}" alt="Photo de profil de {{ user.fullname }}">
+                </div>
+                <div class="profile-info">
+                    <span class="profile-badge">Membre</span>
+                    <h1>{{ user.fullname }}</h1>
+                    <p class="profile-role">{{ user.profession or 'Profession non renseignée' }}</p>
+                    <p class="profile-email"><i class="fa-solid fa-envelope"></i> {{ user.email }}</p>
+                    <p class="profile-date"><i class="fa-solid fa-calendar-days"></i> Inscrit le {{ user.created_at }}</p>
+                    <p class="profile-phone"><i class="fa-solid fa-phone"></i> {{ user.phone or 'Non renseigné' }}</p>
+                    <p style="margin-top:12px;">
+                        <a href="{{ url_for('documents') }}" class="view-more-btn">Voir les documents</a>
+                    </p>
+                </div>
+            </section>
+
+            <section class="profile-form">
+                <div class="profile-form-header">
+                    <h2>Mettre à jour votre profil</h2>
+                    <p>Ajoutez votre téléphone, métier, photo de profil et une courte bio.</p>
+                </div>
+
+                {% if message %}
+                <div class="alert-box">{{ message }}</div>
+                {% endif %}
+
+                <form action="{{ url_for('dashboard_user') }}" method="POST" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <label for="phone">Numéro de téléphone</label>
+                        <input type="tel" id="phone" name="phone" value="{{ user.phone or '' }}" placeholder="Ex: 0612345678">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="profession">Métier</label>
+                        <input type="text" id="profession" name="profession" value="{{ user.profession or '' }}" placeholder="Ex: Bibliothécaire">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="bio">À propos de vous</label>
+                        <textarea id="bio" name="bio" rows="4" placeholder="Parlez un peu de vous...">{{ user.bio or '' }}</textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="profile_image">Photo de profil</label>
+                        <input type="file" id="profile_image" name="profile_image" accept="image/png, image/jpeg, image/gif">
+                    </div>
+
+                    <button type="submit" class="save-btn">Enregistrer les modifications</button>
+                </form>
+
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <div class="footer-logo-circle">
+                <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library">
+            </div>
+            <span>2026 My Library</span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+<header>
+    <div class="logo">
+        <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="" width="50" height="50">
+        My Library
+    </div>
+    <nav>
+        <a href="{{ url_for('home') }}">Accueil</a>
+        <a href="{{ url_for('admin_users') }}">Gestion Utilisateurs</a>
+        <a href="{{ url_for('logout') }}">Déconnexion</a>
+    </nav>
+</header>
+
+<main style="padding:40px;">
+    <div style="max-width:1000px;margin:0 auto;background:white;padding:24px;border-radius:12px;">
+        <h1>Bienvenue, {{ fullname }} (Admin)</h1>
+        <p>Nombre total d'utilisateurs : <strong>{{ total_users }}</strong></p>
+
+    <div style="margin-top:20px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="{{ url_for('admin_users') }}" class="view-more-btn">Gérer les utilisateurs</a>
+            <a href="{{ url_for('admin_documents') }}" class="view-more-btn">Gérer les documents</a>
+            <a href="{{ url_for('admin_comments') }}" class="view-more-btn">Commentaires</a>
+        </div>
+    </div>
+</main>
+
+<footer style="margin-top:40px;">
+    <div class="footer-brand">
+        <div class="footer-logo-circle">
+            <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library">
+        </div>
+        <span>2026 My Library</span>
+    </div>
+</footer>
+</body>
+</html>

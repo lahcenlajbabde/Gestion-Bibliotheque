@@ -36,6 +36,9 @@ nav a {
     text-decoration: none;
     margin-left: 30px;
     font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 nav a:hover {

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commentaires | Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        .response-box {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: #e8f5e9;
+            border-left: 4px solid #2e7d32;
+            border-radius: 8px;
+        }
+        .response-box strong {
+            color: #1b5e20;
+        }
+        .response-box p {
+            color: #333;
+            margin: 6px 0 0 0;
+        }
+        .response-box small {
+            color: #666;
+        }
+        .respond-form {
+            margin-top: 12px;
+        }
+        .respond-form textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d7dfe7;
+            border-radius: 10px;
+            background: #f8fbff;
+            color: #1f4e79;
+            font-size: 14px;
+            outline: none;
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        .respond-form button {
+            margin-top: 8px;
+            padding: 10px 18px;
+            background: #1f4e79;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .respond-form button:hover {
+            background: #163a5c;
+        }
+        .badge-responded {
+            display: inline-block;
+            background: #2e7d32;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="" width="50" height="50">
+            My Library
+        </div>
+        <nav>
+            <a href="{{ url_for('dashboard_admin') }}"><i class="fa-solid fa-tachometer-alt"></i> Dashboard</a>
+            <a href="{{ url_for('admin_documents') }}"><i class="fa-solid fa-book"></i> Documents</a>
+            <a href="{{ url_for('admin_users') }}"><i class="fa-solid fa-users"></i> Utilisateurs</a>
+            <a href="{{ url_for('admin_comments') }}"><i class="fa-solid fa-comments"></i> Commentaires</a>
+            <a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-section">
+        <div class="dashboard-card" style="max-width:900px;width:100%;">
+            <div class="profile-form-header">
+                <h2>Commentaires des utilisateurs</h2>
+                <p>Consultez les avis et suggestions. Vous pouvez répondre à chaque commentaire.</p>
+            </div>
+
+            {% if not comments %}
+            <div style="text-align:center;padding:40px 0;color:#999;">
+                <i class="fa-solid fa-comment-slash" style="font-size:48px;margin-bottom:16px;"></i>
+                <p>Aucun commentaire pour le moment.</p>
+            </div>
+            {% else %}
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:20px;">
+                {% for c in comments %}
+                <div style="background:#f8fbff;border:1px solid #e0e5ec;border-radius:12px;padding:18px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <strong style="color:#1f4e79;"><i class="fa-solid fa-user"></i> {{ c.fullname }}</strong>
+                        <div>
+                            {% if c.admin_response %}
+                            <span class="badge-responded"><i class="fa-solid fa-check"></i> Répondu</span>
+                            {% endif %}
+                            <span style="color:#999;font-size:13px;margin-left:10px;">{{ c.created_at }}</span>
+                        </div>
+                    </div>
+                    <p style="color:#333;line-height:1.5;">{{ c.message }}</p>
+
+                    {% if c.admin_response %}
+                    <div class="response-box">
+                        <strong><i class="fa-solid fa-reply"></i> Réponse de {{ c.admin_name or 'Administrateur' }}</strong>
+                        <p>{{ c.admin_response }}</p>
+                        {% if c.responded_at %}
+                        <small>Répondu le {{ c.responded_at }}</small>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="respond-form">
+                        <form action="{{ url_for('admin_respond_comment', comment_id=c.id) }}" method="POST">
+                            <textarea name="response" rows="3" placeholder="Écrivez votre réponse..." required>{{ c.admin_response or '' }}</textarea>
+                            <button type="submit"><i class="fa-solid fa-reply"></i> 
+                                {% if c.admin_response %}Mettre à jour la réponse{% else %}Répondre{% endif %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-brand">
+            <div class="footer-logo-circle">
+                <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library">
+            </div>
+            <span>2026 My Library</span>
+        </div>
+    </footer>
+</body>
+</html>

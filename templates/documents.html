@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Documents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+<header>
+    <div class="logo"><img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="" width="50" height="50"> My Library</div>
+    <nav>
+        <a href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> Accueil</a>
+        <a href="{{ url_for('documents') }}"><i class="fa-solid fa-book-open"></i> Documents</a>
+        <a href="{{ url_for('apropos') }}"><i class="fa-solid fa-circle-info"></i> À propos</a>
+        <a href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Bienvenue dans votre bibliothèque numérique</h1>
+    <p>Trouvez rapidement vos documents.</p>
+    <form action="{{ url_for('documents') }}" method="POST" class="search">
+        <input type="text" name="query" value="{{ query or '' }}" placeholder="Rechercher un document...">
+        <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </form>
+</section>
+
+{% if message %}
+<div style="max-width:1100px;margin:20px auto;padding:14px 16px;background:#ffefef;color:#a33;border-radius:10px;">{{ message }}</div>
+{% endif %}
+
+<section class="books">
+    <h2>Documents disponibles</h2>
+    <div class="book-container">
+        {% for d in documents %}
+        <div class="book-card">
+            {% if d.cover_image %}
+            <img src="{{ url_for('static', filename='images/covers/' + d.cover_image) }}" alt="Couverture {{ d.title }}">
+            {% else %}
+            <div style="width:100%;height:220px;background:#f4f6f9;display:flex;align-items:center;justify-content:center;color:#999;">Pas de couverture</div>
+            {% endif %}
+            <h3>{{ d.title }}</h3>
+            <p>{{ d.author }}</p>
+            {% if d.category %}
+            <p style="font-size:13px;color:#1f4e79;font-weight:600;">{{ d.category }}</p>
+            {% endif %}
+            <a href="{{ url_for('view_document', doc_id=d.id) }}" class="book-btn">Consulter</a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<section style="max-width:600px;margin:40px auto;padding:0 20px;">
+    <hr style="margin-bottom:30px;border:none;border-top:1px solid #e0e5ec;">
+    <h2 style="color:#1f4e79;margin-bottom:8px;">Envoyer un commentaire</h2>
+    <p style="color:#5f6f88;margin-bottom:20px;">Partagez votre avis ou une suggestion avec l'administrateur.</p>
+
+    {% if comment_message %}
+    <div style="margin-bottom:18px;padding:14px 16px;background:#e7f4ff;color:#0b3e72;border-radius:10px;">{{ comment_message }}</div>
+    {% endif %}
+
+    <form action="{{ url_for('submit_comment') }}" method="POST">
+        <div style="margin-bottom:16px;">
+            <textarea name="message" rows="4" placeholder="Écrivez votre commentaire ici..." required style="padding:14px 16px;border:1px solid #d7dfe7;border-radius:12px;background:#f8fbff;color:#1f4e79;font-size:15px;outline:none;width:100%;font-family:Arial,Helvetica,sans-serif;box-sizing:border-box;"></textarea>
+        </div>
+        <button type="submit" style="padding:14px 22px;background:#1f4e79;color:white;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;">Envoyer</button>
+    </form>
+
+    <p style="margin-top:18px;font-size:14px;color:#5f6f88;">
+        <i class="fa-solid fa-circle-question"></i>
+        <a href="mailto:lahcen.lajbabde.23@edu.uiz.ac.ma" style="color:#1f4e79;text-decoration:none;font-weight:600;">Besoin d'aide ?</a>
+    </p>
+</section>
+
+{% if user_comments %}
+<section style="max-width:700px;margin:20px auto 60px;padding:0 20px;">
+    <hr style="margin-bottom:30px;border:none;border-top:1px solid #e0e5ec;">
+    <h2 style="color:#1f4e79;margin-bottom:8px;"><i class="fa-solid fa-comments"></i> Mes commentaires</h2>
+    <p style="color:#5f6f88;margin-bottom:20px;">Retrouvez ici vos commentaires et les réponses de l'administrateur.</p>
+
+    <div style="display:flex;flex-direction:column;gap:16px;">
+        {% for c in user_comments %}
+        <div style="background:#f8fbff;border:1px solid #e0e5ec;border-radius:12px;padding:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <strong style="color:#1f4e79;"><i class="fa-solid fa-user"></i> {{ c.fullname }}</strong>
+                <span style="color:#999;font-size:13px;">{{ c.created_at }}</span>
+            </div>
+            <p style="color:#333;line-height:1.5;margin:0;">{{ c.message }}</p>
+
+            {% if c.admin_response %}
+            <div style="margin-top:14px;padding:14px 16px;background:#e8f5e9;border-left:4px solid #2e7d32;border-radius:8px;">
+                <strong style="color:#1b5e20;"><i class="fa-solid fa-reply"></i> Réponse de {{ c.admin_name or 'Administrateur' }}</strong>
+                <p style="color:#333;margin:6px 0 0 0;">{{ c.admin_response }}</p>
+                {% if c.responded_at %}
+                <small style="color:#666;">Répondu le {{ c.responded_at }}</small>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<footer>
+    <div class="footer-brand">
+        <div class="footer-logo-circle">
+            <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library">
+        </div>
+        <span>2026 My Library</span>
+    </div>
+</footer>
+</body>
+</html>

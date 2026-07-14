@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des utilisateurs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f7f7f7; }
+        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+        h1 { margin-bottom: 20px; color: #333; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #004d7a; color: white; }
+        tr:hover { background: #f1f9ff; }
+        .empty { color: #666; padding: 20px 0; }
+        .actions { margin-top: 20px; }
+        .actions a { color: #004d7a; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Liste des utilisateurs</h1>
+
+        {% if users %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom complet</th>
+                    <th>Email</th>
+                    <th>Date de création</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.fullname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">Aucun utilisateur trouvé.</div>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{{ url_for('home') }}">Retour à l'accueil</a>
+        </div>
+    </div>
+</body>
+</html>

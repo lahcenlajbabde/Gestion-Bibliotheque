@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>À propos | My Library</title>
-    <link rel="stylesheet" href="Apropos.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Apropos.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
     <header>
         <div class="logo">
-            <img src="images/logo biblio.jfif" alt="Logo My Library" width="50" height="50">
+            <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library" width="50" height="50">
             My Library
         </div>
         <nav>
-            <a href="index.html">Accueil</a>
-            <a href="login.html">Connexion</a>
-            <a href="register.html">Inscription</a>
-            <a href="Apropos.html">À propos</a>
+            <a href="{{ url_for('home') }}"><i class="fa-solid fa-house"></i> Accueil</a>
+            <a href="{{ url_for('login') }}"><i class="fa-solid fa-right-to-bracket"></i> Connexion</a>
+            <a href="{{ url_for('register') }}"><i class="fa-solid fa-user-plus"></i> Inscription</a>
+            <a href="{{ url_for('apropos') }}"><i class="fa-solid fa-circle-info"></i> À propos</a>
         </nav>
     </header>
 
@@ -55,7 +55,7 @@
 
             <div class="about-card">
                 <div class="photo-placeholder">
-                    <img src="images/CV-Picture.jpeg" alt="Photo de profil">
+                    <img src='{{ url_for("static", filename="images/CV-Picture.jpeg") }}' alt="Photo de profil">
                 </div>
                 <h3>Réalisé par</h3>
                 <h2>LAHCEN LAJBABDE</h2>
@@ -76,7 +76,7 @@
     <footer>
         <div class="footer-brand">
             <div class="footer-logo-circle">
-                <img src="images/logo biblio.jfif" alt="Logo My Library">
+                <img src='{{ url_for("static", filename="images/logo biblio.jfif") }}' alt="Logo My Library">
             </div>
             <span>2026 My Library</span>
         </div>
